@@ -1,0 +1,27 @@
+name: Development Branch Check
+
+# Trigger only on pushes to "development" branch
+on:
+  push:
+    branches:
+      - development
+  pull_request:
+    branches:
+      - development
+
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run verification script
+        run: |
+          echo "Running verification for the development branch..."
+          # Place your real verification commands here
+          npm install
+          npm run lint
+          npm test
+
