@@ -8,8 +8,6 @@ on:
   pull_request:
     branches:
       - development
-
-
 jobs:
   verify:
     runs-on: ubuntu-latest
