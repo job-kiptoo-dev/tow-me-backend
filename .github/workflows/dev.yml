@@ -4,10 +4,10 @@ name: Development Branch Check
 on:
   push:
     branches:
-      - development
+      - Development
   pull_request:
     branches:
-      - development
+      - Development
 jobs:
   verify:
     runs-on: ubuntu-latest
