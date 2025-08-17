@@ -1,8 +1,9 @@
 import nodemailer from 'nodemailer'
 import twilio from 'twilio'
+import crypto from 'crypto'
 
-smtp_user=process.env.EMAIL_USER
-smtp_pass=process.env.EMAIL_PASS
+const smtp_user=process.env.EMAIL_USER
+const smtp_pass=process.env.EMAIL_PASS
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -11,7 +12,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const twilioClient = twilio(process.env.TWILIO_SID, process.TWILIO_AUTH);
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
 export async function generateOTP(length=6) {
     const buffer = crypto.randomBytes(length);
@@ -25,7 +26,7 @@ export async function generateOTP(length=6) {
 
 export async function sendEmailOTP(to, otp) {
     await transporter.sendMail({
-        from: `"TowMe" <${process.env.EMAIL_USER}`,
+        from: `"TowMe" <${process.env.EMAIL_USER}>`,
         to,
         subject: "Your OTP Code",
         text: `Your verification code is ${otp}.\n It will expire in 10 minutes.`

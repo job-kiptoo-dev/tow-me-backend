@@ -10,10 +10,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 5000;
 
-console.log(port);
+// console.log(port);
 
 const mongo_uri = process.env.MONGO_URI
 
+console.log(mongo_uri);
 
 mongoose.connect(mongo_uri)
   .then(() => console.log("MongoDB connected"))
