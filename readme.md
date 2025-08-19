@@ -14,10 +14,10 @@ This document provides an overview of the available routes in the **tow-me-backe
 
 | Method | Endpoint         | Description           |
 |--------|-----------------|-----------------------|
-| POST   | `api/auth/login`   | User login            |
-| POST   | `api/auth/register`| User registration     |
-| POST   | `api/auth/verify`  | Verify OTP      |
-| POST   | `api/auth/resend-otp` | Resend OTP    |
+| POST   | `/api/auth/login`   | User login            |
+| POST   | `/api/auth/register`| User registration     |
+| POST   | `/api/auth/verify`  | Verify OTP      |
+| POST   | `/api/auth/resend-otp` | Resend OTP    |
 
 
 
