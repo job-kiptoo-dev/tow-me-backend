@@ -29,11 +29,11 @@ export async function sendEmailOTP(to, otp) {
         from: `"TowMe" <${process.env.EMAIL_USER}>`,
         to,
         subject: "Your OTP Code",
-        text: `Your verification code is ${otp}.\n It will expire in 10 minutes.`
+        text: `Your verification code is ${otp}.\n It will expire in 5 minutes.`
     })
 }
 
-export async function sendSMSOTP(to, otp){
+export async function sendSMSOTP(to, otp) {
     await twilioClient.messages.create({
         body: `Your TowMe OTP is ${otp}`,
         to
