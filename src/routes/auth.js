@@ -1,12 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { generateOTP, sendEmailOTP, sendSMSOTP } from "../utils/otp.js";
+import { generateOTP, sendEmailOTP } from "../utils/otp.js";
 import User from "../models/user.js";
 
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
+  
   try {
     const { name, email, phone, password, role } = req.body;
 
@@ -30,7 +31,7 @@ router.post("/register", async (req, res) => {
     });
 
     if (email) await sendEmailOTP(email, otp);
-    if (phone) await sendSMSOTP(phone, otp);
+    // if (phone) await sendSMSOTP(phone, otp);
 
     res.json({ message: "OTP sent via email/SMS. Verify to continue." });
   } catch (err) {
@@ -82,7 +83,7 @@ router.post("/login", async (req, res) => {
       await existUser.save();
 
       if (existUser.email) await sendEmailOTP(existUser.email, otp);
-      if (existUser.phone) await sendSMSOTP(existUser.phone, otp);
+      // if (existUser.phone) await sendSMSOTP(existUser.phone, otp);
 
       return res
         .status(403)

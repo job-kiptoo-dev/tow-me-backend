@@ -1,9 +1,15 @@
 import nodemailer from 'nodemailer'
 import twilio from 'twilio'
 import crypto from 'crypto'
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const smtp_user=process.env.EMAIL_USER
 const smtp_pass=process.env.EMAIL_PASS
+
+
+
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -12,7 +18,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
+// const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
 export async function generateOTP(length=6) {
     const buffer = crypto.randomBytes(length);
@@ -33,9 +39,9 @@ export async function sendEmailOTP(to, otp) {
     })
 }
 
-export async function sendSMSOTP(to, otp) {
-    await twilioClient.messages.create({
-        body: `Your TowMe OTP is ${otp}`,
-        to
-    })
-}
+// export async function sendSMSOTP(to, otp) {
+//     await twilioClient.messages.create({
+//         body: `Your TowMe OTP is ${otp}`,
+//         to
+//     })
+// }

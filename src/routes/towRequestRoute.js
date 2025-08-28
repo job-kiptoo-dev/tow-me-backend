@@ -21,12 +21,12 @@ function getDistanceKm(coord1, coord2) {
 }
 
 // listen "towRequest:new"
-router.post("/", authMiddleware, authorize(["user"]), async (req, res) => {
+router.post("/", authMiddleware, authorize("owner"), async (req, res) => {
     try {
         const {pickupLocation, dropoffLocation, vehicleDetails, notes} = req.body;
 
         const towRequest = new TowRequest({
-            user: req.user._id,
+            user: req.user._id || req.user.id,
             pickupLocation,
             dropoffLocation,
             vehicleDetails,
@@ -57,7 +57,7 @@ router.post("/", authMiddleware, authorize(["user"]), async (req, res) => {
     }
 })
 
-router.get("/provider", authMiddleware, authorize(["provider"]), async(req, res) => {
+router.get("/provider", authMiddleware, authorize("provider"), async(req, res) => {
     try {
         const towRequests = await TowRequest.find({status: "pending"})
             .populate("user", "name phone")
@@ -69,7 +69,7 @@ router.get("/provider", authMiddleware, authorize(["provider"]), async(req, res)
 } )
 
 // listen  "towRequest:accepted"
-router.patch("/:id/accept", authMiddleware, authorize(["provider"]), async( req, res) => {
+router.patch("/:id/accept", authMiddleware, authorize("provider"), async( req, res) => {
     try {
         const towRequest = await TowRequest.findById(req.params.id);
         if (!towRequest) return res.status(404).json({error: "Tow request not found"});
@@ -90,7 +90,7 @@ router.patch("/:id/accept", authMiddleware, authorize(["provider"]), async( req,
 })
 
 // listen  "towRequest:completed"
-router.patch("/:id/complete", authMiddleware, authorize(["provider"]), async( req, res) => {
+router.patch("/:id/complete", authMiddleware, authorize("provider"), async( req, res) => {
     try {
         const towRequest = await TowRequest.findById(req.params.id);
         if (!towRequest) return res.status(404).json({error: "Tow request not found"});

@@ -11,7 +11,13 @@ const towRequstSchema = new mongoose.Schema({
         latitude: Number,
         longitude: Number
     },
-    vehicleDetails: { type: String },
+    vehicleDetails: {
+        make: { type: String },
+        model: { type: String },
+        year: { type: Number },
+        color: { type: String },
+        licensePlate: { type: String }
+     },
     notes: { type: String },
     status: {
         type: String,
