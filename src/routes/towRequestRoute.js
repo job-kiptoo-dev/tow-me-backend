@@ -68,6 +68,18 @@ router.get("/provider", authMiddleware, authorize("provider"), async(req, res) =
     }
 } )
 
+router.get("/all", authMiddleware, authorize("admin"), async(req, res) => {
+    try {
+        const towRequests = await TowRequest.find()
+            .populate("user", "name phone")
+            .sort({ createdAt: -1})
+        res.json(towRequests)    
+    } catch (err) {
+        res.status(500).json({error: err.message})
+    }
+} )
+
+
 // listen  "towRequest:accepted"
 router.patch("/:id/accept", authMiddleware, authorize("provider"), async( req, res) => {
     try {
