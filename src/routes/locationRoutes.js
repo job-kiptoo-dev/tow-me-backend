@@ -1,5 +1,5 @@
 import express from "express";
-import Location from "../models/location.js";
+import Location from "../models/Location.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
