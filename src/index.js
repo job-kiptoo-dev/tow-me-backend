@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js"
 import towRequestRoutes from "./routes/towRequestRoute.js"
 import locationRoutes from './routes/locationRoutes.js'
+import cors from "cors";
 dotenv.config()
 
 const app = express();
