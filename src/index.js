@@ -10,10 +10,15 @@ dotenv.config()
 
 const app = express();
 const server = http.createServer(app);
+app.use(cors({
+  origin: [process.env.CORS_ORIGIN || "http://localhost:3000"], 
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  credentials: true,
+}));
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: [process.env.CORS_ORIGIN || "http://localhost:3000"],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"]
   },
 })
