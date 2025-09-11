@@ -24,6 +24,11 @@ const towRequstSchema = new mongoose.Schema({
         enum: ["pending", "accepted", "in_progress", "completed", "cancelled"],
         default: "pending"
     },
+    assignedVehicle: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TowVehicle",
+        default: null
+    },
     createdAt: { type: Date, default: Date.now }
 }, {timestamps: true})
 

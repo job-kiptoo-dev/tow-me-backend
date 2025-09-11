@@ -1,5 +1,6 @@
 import express from 'express';
 import TowRequest from '../models/TowRequest.js';
+import TowVehicle from '../models/TowingVehicle.js'
 import { authMiddleware } from '../middleware/authMiddleware.js';
 import {authorize } from '../middleware/roleMiddleware.js'
 
@@ -81,14 +82,27 @@ router.get("/all", authMiddleware, authorize("admin"), async(req, res) => {
 
 
 // listen  "towRequest:accepted"
-router.patch("/:id/accept", authMiddleware, authorize("provider"), async( req, res) => {
+router.patch("/:requestId/:vehicleId/accept", authMiddleware, authorize("provider"), async( req, res) => {
     try {
-        const towRequest = await TowRequest.findById(req.params.id);
-        if (!towRequest) return res.status(404).json({error: "Tow request not found"});
+        const { requestId, vehicleId} = req.params
+        const towRequest = await TowRequest.findById(requestId);
+        const vehicle = await TowVehicle.findById(vehicleId);
+        if (!towRequest|| !vehicle) {
+            return res.status(404).json({ error: "Request or vehicle not found" });
+        }
+
+        if (!vehicle.isAvailable) {
+            return res.status(400).json({ error: "Vehicle not available" });
+        }
 
         towRequest.provider = req.user._id,
         towRequest.status = "accepted",
+        towRequest.assignedVehicle = vehicle._id;
         await towRequest.save();
+
+        vehicle.isAvailable = false;
+        vehicle.currentRequest = request._id;
+        await vehicle.save();
 
         const io = req.app.get("io");
         io.to(towRequest.user.toString()).emit("towRequest:accepted", towRequest)
@@ -104,11 +118,17 @@ router.patch("/:id/accept", authMiddleware, authorize("provider"), async( req, r
 // listen  "towRequest:completed"
 router.patch("/:id/complete", authMiddleware, authorize("provider"), async( req, res) => {
     try {
-        const towRequest = await TowRequest.findById(req.params.id);
+        const towRequest = await TowRequest.findById(req.params.id).populate("assignedVehicle");
         if (!towRequest) return res.status(404).json({error: "Tow request not found"});
 
         towRequest.status = "completed"
         await towRequest.save()
+        if (towRequest.assignedVehicle) {
+            const vehicle = await TowVehicle.findById(request.assignedVehicle._id);
+            vehicle.isAvailable = true;
+            vehicle.currentRequest = null;
+            await vehicle.save();
+        }
 
         const io = req.app.get("io");
         io.to(towRequest.user.toString()).emit("towRequest:completed", towRequest);

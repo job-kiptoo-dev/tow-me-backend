@@ -7,6 +7,7 @@ This document provides an overview of the available routes in the **tow-me-backe
 - [Authentication](#authentication)
 - [Towing Requests](#towing-requests)
 - [Location](#location)
+- [Towing Vehicle](#towing-vehicle)
 
 ---
 
@@ -39,6 +40,16 @@ This document provides an overview of the available routes in the **tow-me-backe
 |--------|-----------------------|------------------------------|
 | POST    | `/api/location/update-location` | Update user current location     |
 | POST   | `/api/location/nearby-provider`           | Find nearby towing providers         |
+
+## Towing Vehicle
+
+| Method | Endpoint               | Description                  |
+|--------|-----------------------|------------------------------|
+| GET    | `/api/towing-vehicles` | List all towing vehicles   |
+| POST   | `/api/towing-vehicles/register`           | Register a new towing vehicle         |
+| PATCH | `/api/towing-vehicles/:id/availability`       | Update vehicle availability        |
+| GET  | `/api/towing-vehicles/my-vehicles` | List provider’s own towing vehicles |
+
 
 
 

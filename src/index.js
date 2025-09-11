@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js"
 import towRequestRoutes from "./routes/towRequestRoute.js"
 import locationRoutes from './routes/locationRoutes.js'
+import towingVehicleRoutes from './routes/towingVehicleRoutes.js'
 import cors from "cors";
 dotenv.config()
 
@@ -45,6 +46,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes)
 app.use("/api/location", locationRoutes)
 app.use("/api/tow-requests", towRequestRoutes)
+app.use('/api/towing-vehicles', towingVehicleRoutes)
 
 
 io.on("connection", (socket) => {
